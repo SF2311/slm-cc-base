@@ -3,6 +3,7 @@
   ansible.builtin.assert:
     that:
       - resource_id is defined and resource_id | length > 0
+      - service_id is defined
 
 - name: Remove service from consul node
   ansible.builtin.uri:
@@ -11,7 +12,6 @@
     body_format: json
     body:
       NODE: "{{ resource_id }}"
-      ServiceID: "node_exporter"
-
+      ServiceID: "{{ service_id }}"
     headers:
       Authorization: "Bearer {{ consul_token }}"

@@ -3,7 +3,7 @@
   ansible.builtin.assert:
     that:
       - resource_id is defined and resource_id | length > 0
-      - node_exporter_port is defined
+      - consul_service is defined
 
 - name: Get consul node
   ansible.builtin.uri:
@@ -22,12 +22,6 @@
       ID: "{{ resource_id }}"
       NODE: "{{ consul_node['json'][0]['Node'] }}"
       Address: "{{ consul_node['json'][0]['Address'] }}"
-      Service:
-        Service: "node_exporter"
-        Port: "{{ node_exporter_port }}"
-        Tags:
-          - "prometheus"
-        Meta:
-          resource_id: "{{ resource_id }}"
+      Service: "{{ consul_service }}"
     headers:
       Authorization: "Bearer {{ consul_token }}"

@@ -36,6 +36,9 @@
         name: "node_exporter"
 
     - ansible.builtin.include_role:
+        name: "slm_monitoring"
+
+    - ansible.builtin.include_role:
         name: "basyx_server"
 
     - name: Install consul client
@@ -53,11 +56,33 @@
   vars:
     ansible_connection: local
   tasks:
-    - ansible.builtin.include_role:
+    - name: Register services
+      ansible.builtin.include_role:
         name: "prometheus"
         tasks_from: add_target.yml
       vars:
-        node_exporter_port: 9100
+        consul_service: "{{ item.consul_service }}"
         consul_url: "{{ consul_public_server_url }}"
         consul_token: "{{ lookup('env', 'CONSUL_TOKEN') }}"
-        consul_client_node_id: "{{ resource_id }}"
+      loop:
+        - consul_service:
+            Service: "node_exporter"
+            Port: 9100
+            Tags:
+              - "prometheus"
+            Meta:
+              resource_id: "{{ resource_id }}"
+        - consul_service:
+            Service: "cAdvisor"
+            Port: 8080
+            Tags:
+              - "prometheus"
+            Meta:
+              resource_id: "{{ resource_id }}"
+        - consul_service:
+            Service: "process_exporter"
+            Port: 9256
+            Tags:
+              - "prometheus"
+            Meta:
+              resource_id: "{{ resource_id }}"

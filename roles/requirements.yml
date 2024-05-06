@@ -12,3 +12,7 @@ roles:
     scm: git
     version: 1.0.0
     name: consul
+  - src: "git+https://github.com/SF2311/slm_monitoring"
+    scm: git
+    version: main
+    name: slm_monitoring
