@@ -1,0 +1,33 @@
+{
+    "id": "657d64b6-7f8a-41b7-8202-d3fb7c0ddaac",
+    "capabilityClass": "BaseConfigurationCapability",
+    "name": "Base-Config",
+    "logo": "mdi-factory",
+    "type": [
+        "SETUP"
+    ],
+    "actions": {
+        "UNINSTALL": {
+            "actionClass": "AwxAction",
+            "actionType": "UNINSTALL",
+            "skipable": false,
+            "connectionTypes": [
+                "ssh"
+            ],
+            "awxRepo": "https://github.com/eclipse-slm/slm-cc-base",
+            "awxBranch": "main",
+            "playbook": "uninstall.yml"
+        },
+        "INSTALL": {
+            "actionClass": "AwxAction",
+            "actionType": "INSTALL",
+            "skipable": false,
+            "connectionTypes": [
+                "ssh"
+            ],
+            "awxRepo": "https://github.com/eclipse-slm/slm-cc-base",
+            "awxBranch": "main",
+            "playbook": "install.yml"
+        }
+    }
+}
